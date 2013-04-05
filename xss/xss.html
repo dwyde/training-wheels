@@ -1,0 +1,27 @@
+<html>
+<body>
+
+<form id="user-input">
+    <input type="text" value="<em>Foo</em>">
+</form>
+
+<div id="output"></div>
+
+<script src="jquery.min.js"></script>
+<script>
+    $('#user-input').submit(function () {
+        var value = $(this).find('input').val();
+        $('#output').html(value);
+        return false;
+    });
+    $('#user-input').submit();
+    
+    $.ajax('file.json', {
+        success: function() {
+            alert(1);
+        }
+    });
+</script>
+
+</body>
+</html>
