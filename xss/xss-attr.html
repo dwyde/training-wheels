@@ -1,0 +1,23 @@
+<html>
+<body>
+
+<form id="user-input">
+    <input type="text" value="blue">
+</form>
+
+<div id="output"></div>
+
+<script src="jquery.min.js"></script>
+<!-- "><script>alert(1)</script><p class=" -->
+<script>
+    $('#user-input').submit(function () {
+        var value = $(this).find('input').val();
+        $('#output').html('<p style="color:' + value + '">Hi!</p>');
+        return false;
+    });
+    $('#user-input').submit();
+</script>
+
+</body>
+</html>
+
