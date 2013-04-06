@@ -1,4 +1,8 @@
-import sqlite3
+import sqlite3  
+
+
+# Users to initially load into the database.
+USERS = ('david', 'foo')
 
 
 def init_database():
@@ -6,8 +10,8 @@ def init_database():
     conn = sqlite3.connect(':memory:')
     with conn:
         conn.execute('''CREATE TABLE users (name text)''')
-        conn.execute('''INSERT INTO users VALUES ('david')''')
-        conn.execute('''INSERT INTO users VALUES ('foo')''')
+        for user in USERS:
+            conn.execute('''INSERT INTO users VALUES (?)''', (user,))
     return conn
 
 def sql_select_injection(name):
@@ -23,7 +27,7 @@ def sql_select_injection(name):
         results = cur.fetchall()
         cur.close()
     
-    success = len(results) == 2
+    success = len(results) == len(USERS)
     return success
 
 def sql_insert_injection(name):
@@ -39,7 +43,6 @@ def sql_insert_injection(name):
         cursor.execute('SELECT * FROM users')
         results = cursor.fetchall()
         cursor.close()
-        
-    print results
-    success = len(results) > 2
+    
+    success = len(results) > len(USERS)
     return success
