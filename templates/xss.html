@@ -1,0 +1,52 @@
+<html>
+<body>
+
+<form id="user-input">
+    <input type="text" value="<em>Foo</em>">
+</form>
+
+<div id="output"></div>
+
+<button id="next-hint">Next hint</button>
+<div id="hint-display"></div>
+
+<script src="/static/jquery.min.js"></script>
+<script>
+    $('#user-input').submit(function () {
+        var value = $(this).find('input').val();
+        $('#output').html(value);
+        return false;
+    });
+    $('#user-input').submit();
+    
+    
+    
+    var hints = [
+        'HTML tags are written unescaped into the page.',
+        '<script> tags execute JavaScript.',
+        'Start with <script>alert(1)<\/script>.',
+    ];
+    var currentHint = 0;
+    $('#next-hint').click(function () {
+        if (currentHint < hints.length) {
+            var hint = hints[currentHint];
+            currentHint += 1;
+            $('#hint-display').text(hint);
+        }        
+    });
+    
+    
+    // Taken from http://stackoverflow.com/a/1349426
+    function makeid() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 10; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+</script>
+
+</body>
+</html>

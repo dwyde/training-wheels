@@ -7,14 +7,25 @@
 
 <div id="output"></div>
 
-<script src="jquery.min.js"></script>
+<script src="/static/jquery.min.js"></script>
 <!-- "><script>alert(1)</script><p class=" -->
 <script>
+    
+    function setColor(value) {
+        $('#output').html('<p style="color:' + value + '">Hi!</p>');
+    }
+    
+    $('#user-input input').keyup(function () {
+        var value = $(this).val();
+        setColor(value);
+    });
+    
     $('#user-input').submit(function () {
         var value = $(this).find('input').val();
-        $('#output').html('<p style="color:' + value + '">Hi!</p>');
+        setColor(value);
         return false;
     });
+    
     $('#user-input').submit();
 </script>
 
