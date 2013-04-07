@@ -1,5 +1,7 @@
 from flask import render_template
 
+import sqlite3
+
 
 class BaseLevel(object):
     
@@ -38,11 +40,75 @@ class ReflectedXSSQueryParam(BaseLevel):
     
     def process(self, request):
         return {'name': request.args.get('name', '')}
+
+
+class BaseSQLInjection(BaseLevel):
     
+    # Users to initially load into the database.
+    users = ('david', 'foo')
+
+    def _init_database(self):
+        """ Initialize an in-memory SQLite database of users. """
+        conn = sqlite3.connect(':memory:')
+        with conn:
+            conn.execute('''CREATE TABLE users (name text)''')
+            for user in self.users:
+                conn.execute('''INSERT INTO users VALUES (?)''', (user,))
+        return conn
+
+
+class SQLSelectInjection(BaseSQLInjection):
+    """ Perform an SQL SELECT query that's vulnerable to injection. """
+    
+    name = 'SQL SELECT Injection'
+    
+    template = 'sqli.html'
+    
+    def process(self, request):
+        # name = "' OR '1'='1"
+        name = request.args.get('name', '')
+        query = "SELECT * FROM users WHERE name='{0}'".format(name)
+        
+        conn = self._init_database()
+        with conn:
+            cur = conn.cursor()
+            cur.execute(query)
+            results = cur.fetchall()
+            cur.close()
+        
+        success = len(results) == len(self.users)
+        return {'query': query, 'success': success}
+
+class SQLInsertInjection(BaseSQLInjection):
+    """ Allow multiple statements to be executed via SQL injection. """
+    
+    name = 'SQL INSERT Injection'
+    
+    template = 'sqli.html'
+    
+    def process(self, request):
+        # name = "'; INSERT INTO users VALUES ('zz')--"
+        name = request.args.get('name', '')
+        query = "SELECT * FROM users WHERE name='{0}'".format(name)
+        
+        conn = self._init_database()
+        with conn:
+            cursor = conn.cursor()
+            cursor.executescript(query)
+            cursor.execute('SELECT * FROM users')
+            results = cursor.fetchall()
+            cursor.close()
+    
+        success = len(results) > len(self.users)
+        return {'query': query, 'success': success}
+
+
 
 # An index of available levels.
 LEVELS = [
     ReflectedXSSForm(),
     ReflectedXSSAttr(),
     ReflectedXSSQueryParam(),
+    SQLSelectInjection(),
+    SQLInsertInjection(),
 ]

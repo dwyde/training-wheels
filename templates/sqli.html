@@ -2,7 +2,7 @@
 <html>
 <body>
 <p>The database intends to return one user. Make it return all of them.</p>
-<p><pre>SELECT * FROM users WHERE name='{{ name }}'</pre></p>
+<p><pre>{{ query }}</pre></p>
 
 {% if success %}
   <h1>Success!</h1>
