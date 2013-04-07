@@ -1,13 +1,10 @@
 from flask import Flask, render_template, request
 
 from sqli.sqli import sql_select_injection, sql_insert_injection
+from levels import LEVELS
 
 
 app = Flask(__name__)
-
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
 
 @app.route('/sqli')
 def sqli():
@@ -21,19 +18,19 @@ def sqli_insert():
     success = sql_insert_injection(name)
     return render_template('sqli.html', success=success, name=name)
 
-@app.route('/xss')
-def xss():
-    return render_template('xss.html')
+@app.route('/level/<int:level_num>/')
+def level(level_num):
+    try:
+        level_obj = LEVELS[level_num]
+    except IndexError:
+        return 'Level not found.', 404
+    else:
+        return level_obj.render(request)
 
-@app.route('/xss-attr')
-def xss_attr():
-    return render_template('xss-attr.html')
+@app.route('/')
+def index():
+    return render_template('index.html', levels=enumerate(LEVELS))
 
-@app.route('/xss-query')
-def xss_query():
-    name = request.args.get('name', '')
-    response_body = render_template('xss-query.html', name=name)
-    return response_body, 200, {'X-XSS-Protection': '0'}
 
 if __name__ == '__main__':
     app.run(debug=True)
