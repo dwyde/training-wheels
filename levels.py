@@ -66,18 +66,23 @@ class SQLSelectInjection(BaseSQLInjection):
     
     def process(self, request):
         # name = "' OR '1'='1"
+        #' OR 1=1--
         name = request.args.get('name', '')
         query = "SELECT * FROM users WHERE name='{0}'".format(name)
         
         conn = self._init_database()
         with conn:
             cur = conn.cursor()
-            cur.execute(query)
+            try:
+                cur.execute(query)
+            except sqlite3.OperationalError:
+                pass
             results = cur.fetchall()
             cur.close()
         
         success = len(results) == len(self.users)
         return {'query': query, 'success': success}
+
 
 class SQLInsertInjection(BaseSQLInjection):
     """ Allow multiple statements to be executed via SQL injection. """
@@ -94,14 +99,16 @@ class SQLInsertInjection(BaseSQLInjection):
         conn = self._init_database()
         with conn:
             cursor = conn.cursor()
-            cursor.executescript(query)
+            try:
+                cursor.executescript(query)
+            except sqlite3.OperationalError:
+                pass
             cursor.execute('SELECT * FROM users')
             results = cursor.fetchall()
             cursor.close()
     
         success = len(results) > len(self.users)
         return {'query': query, 'success': success}
-
 
 
 # An index of available levels.
