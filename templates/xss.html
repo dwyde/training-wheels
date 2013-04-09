@@ -1,5 +1,5 @@
-<html>
-<body>
+{% extends 'base.html' %}
+{% block exercise %}
 
 <form id="user-input">
     <input type="text" value="<em>Foo</em>">
@@ -37,16 +37,20 @@
     
     
     // Taken from http://stackoverflow.com/a/1349426
-    function makeid() {
+    function makeID(len) {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-        for (var i = 0; i < 10; i++)
+        for (var i = 0; i < len; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
 
         return text;
     }
+    
+    // Intentionally global "password" variable.
+    password = makeID(15);
+    
+    
 </script>
 
-</body>
-</html>
+{% endblock %}

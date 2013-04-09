@@ -1,6 +1,11 @@
+{% extends 'base.html' %}
+{% block exercise %}
 
 <form>
-<input name="name">
+<label for="name">Enter your name: </label><input name="name">
+<input type="submit" value="Go!">
 </form>
 
 Your name is: {{ name | safe }}.
+
+{% endblock %}

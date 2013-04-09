@@ -1,5 +1,3 @@
-from flask import render_template
-
 import sqlite3
 
 
@@ -12,29 +10,24 @@ class BaseLevel(object):
     def process(self, request):
         return {}
     
-    def render(self, request):
-        context = self.process(request)
-        response_body = render_template(self.template, **context)
-        return response_body, 200, {'X-XSS-Protection': '0'}
-
 
 class ReflectedXSSForm(BaseLevel):
     
-    name = 'Reflected XSS in an HTML Form'
+    name = 'Script injection in a form'
     
     template = 'xss.html'
 
 
 class ReflectedXSSAttr(BaseLevel):
     
-    name = 'Reflected XSS on an HTML Attribute'
+    name = 'Script injection in an attribute'
     
     template = 'xss-attr.html'
 
 
 class ReflectedXSSQueryParam(BaseLevel):
     
-    name = 'Reflected XSS in a Query Parameter'
+    name = 'XSS in a Query Parameter'
     
     template = 'xss-query.html'
     
@@ -60,7 +53,7 @@ class BaseSQLInjection(BaseLevel):
 class SQLSelectInjection(BaseSQLInjection):
     """ Perform an SQL SELECT query that's vulnerable to injection. """
     
-    name = 'SQL SELECT Injection'
+    name = 'SQL SELECT injection'
     
     template = 'sqli.html'
     
@@ -87,7 +80,7 @@ class SQLSelectInjection(BaseSQLInjection):
 class SQLInsertInjection(BaseSQLInjection):
     """ Allow multiple statements to be executed via SQL injection. """
     
-    name = 'SQL INSERT Injection'
+    name = 'SQL INSERT injection'
     
     template = 'sqli.html'
     

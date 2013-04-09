@@ -1,6 +1,6 @@
-<!DOCTYPE html>
-<html>
-<body>
+{% extends 'base.html' %}
+{% block exercise %}
+
 <p>The database intends to return one user. Make it return all of them.</p>
 <p><pre>{{ query }}</pre></p>
 
@@ -10,5 +10,4 @@
   <h1>Keep trying.</h1>
 {% endif %}
 
-</body>
-</html>
+{% endblock %}

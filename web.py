@@ -13,8 +13,13 @@ def level(level_num):
         level_obj = LEVELS[level_num]
     except IndexError:
         return 'Level not found.', 404
-    else:
-        return level_obj.render(request)
+    
+    context = level_obj.process(request)
+    response_body = render_template(level_obj.template,
+                                    title=level_obj.name,
+                                    levels=enumerate(LEVELS),
+                                    **context)
+    return response_body, 200, {'X-XSS-Protection': '0'}
 
 @app.route('/')
 def index():
