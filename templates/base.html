@@ -10,8 +10,8 @@
     </header>
     <nav>
         <ul>
-        {% for i, level in levels %}
-            <li><a href="/level/{{ i }}/">{{ level.name }}</a></li>
+        {% for i, exercise in exercises %}
+            <li><a href="/exercise/{{ i }}/">{{ exercise.name }}</a></li>
         {% endfor %}
         </ul>
     </nav>

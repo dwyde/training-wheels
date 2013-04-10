@@ -1,7 +1,7 @@
 import sqlite3
 
 
-class BaseLevel(object):
+class BaseExercise(object):
     
     name = ''
     
@@ -11,21 +11,21 @@ class BaseLevel(object):
         return {}
     
 
-class ReflectedXSSForm(BaseLevel):
+class ReflectedXSSForm(BaseExercise):
     
     name = 'Script injection in a form'
     
     template = 'xss.html'
 
 
-class ReflectedXSSAttr(BaseLevel):
+class ReflectedXSSAttr(BaseExercise):
     
     name = 'Script injection in an attribute'
     
     template = 'xss-attr.html'
 
 
-class ReflectedXSSQueryParam(BaseLevel):
+class ReflectedXSSQueryParam(BaseExercise):
     
     name = 'XSS in a Query Parameter'
     
@@ -35,7 +35,7 @@ class ReflectedXSSQueryParam(BaseLevel):
         return {'name': request.args.get('name', '')}
 
 
-class BaseSQLInjection(BaseLevel):
+class BaseSQLInjection(BaseExercise):
     
     # Users to initially load into the database.
     users = ('david', 'foo')
@@ -112,7 +112,7 @@ class SQLInsertInjection(BaseSQLInjection):
 
 
 # An index of available levels.
-LEVELS = [
+EXERCISES = [
     ReflectedXSSForm(),
     ReflectedXSSAttr(),
     ReflectedXSSQueryParam(),

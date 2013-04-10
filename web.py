@@ -1,29 +1,29 @@
 from flask import Flask, render_template, request
 
-from levels import LEVELS
+from exercises import EXERCISES
 
 
 # Initialize the Flask application.
 app = Flask(__name__)
 
 
-@app.route('/level/<int:level_num>/')
-def level(level_num):
+@app.route('/exercise/<int:exercise_num>/')
+def exercise(exercise_num):
     try:
-        level_obj = LEVELS[level_num]
+        exercise_obj = EXERCISES[exercise_num]
     except IndexError:
-        return 'Level not found.', 404
+        return 'Exercise not found.', 404
     
-    context = level_obj.process(request)
-    response_body = render_template(level_obj.template,
-                                    title=level_obj.name,
-                                    levels=enumerate(LEVELS),
+    context = exercise_obj.process(request)
+    response_body = render_template(exercise_obj.template,
+                                    title=exercise_obj.name,
+                                    exercises=enumerate(EXERCISES),
                                     **context)
     return response_body, 200, {'X-XSS-Protection': '0'}
 
 @app.route('/')
 def index():
-    return render_template('index.html', levels=enumerate(LEVELS))
+    return render_template('index.html', exercises=enumerate(EXERCISES))
 
 
 if __name__ == '__main__':
