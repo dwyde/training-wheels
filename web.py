@@ -13,10 +13,6 @@ app = Flask(__name__)
 def password_source():
     return render_template('js-password.html')
 
-@app.route('/xss-form')
-def xss_form():
-    return render_template('xss-form.html')
-
 @app.route('/xss-attr')
 def xss_attr():
     return render_template('xss-attr.html'), 200, {'X-XSS-Protection': '0'}
