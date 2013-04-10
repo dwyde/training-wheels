@@ -2,7 +2,9 @@
 {% block exercise %}
 
 <form id="user-input">
-    <input type="text" value="<em>Foo</em>">
+    <label for="message">Enter an HTML message: </label>
+    <input type="text" name="message" value="<em>Foo</em>">
+    <input type="submit" value="Show me!">
 </form>
 
 <div id="output"></div>
@@ -11,9 +13,10 @@
 <div id="hint-display"></div>
 
 <script src="/static/jquery.min.js"></script>
+<script src="/static/exercise-util.js"></script>
 <script>
     $('#user-input').submit(function () {
-        var value = $(this).find('input').val();
+        var value = $(this).find('input[type=text]').val();
         $('#output').html(value);
         return false;
     });
