@@ -25,7 +25,7 @@ class BaseSQLInjection(object):
             cursor = conn.cursor()
             try:
                 self._run_query(cursor, query)
-            except sqlite3.OperationalError:
+            except (sqlite3.OperationalError, sqlite3.Warning):
                 pass
             self._extra_statements(cursor)
             results = cursor.fetchall()
@@ -43,6 +43,7 @@ class BaseSQLInjection(object):
     
     def _check_success(self, results):
         raise NotImplementedError
+
 
 class SQLSelectInjection(BaseSQLInjection):
     """ Perform an SQL SELECT query that's vulnerable to injection. """
