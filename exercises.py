@@ -27,7 +27,7 @@ class ReflectedXSSAttr(BaseExercise):
 
 class ReflectedXSSQueryParam(BaseExercise):
     
-    name = 'XSS in a Query Parameter'
+    name = 'XSS in a query parameter'
     
     template = 'xss-query.html'
     
@@ -64,7 +64,8 @@ class BaseSQLInjection(BaseExercise):
             self._extra_statements(cursor)
             results = cursor.fetchall()
             cursor.close()
-    
+        conn.close()
+        
         success = self._check_success(results)
         return {'query': query, 'success': success}
 
