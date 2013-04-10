@@ -19,7 +19,7 @@ def xss_form():
 
 @app.route('/xss-attr')
 def xss_attr():
-    return render_template('xss-attr.html')
+    return render_template('xss-attr.html'), 200, {'X-XSS-Protection': '0'}
 
 @app.route('/xss-query')
 def xss_query():

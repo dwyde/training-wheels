@@ -1,34 +1,22 @@
 {% extends 'base.html' %}
-{% set title = 'Script injection in an attribute' %}
+{% set title = 'XSS in an attribute' %}
+
+{% block instructions %}
+<p>Here's a slightly harder XSS exercise.</p>
+<p>Inject a &lt;script&gt; tag into the page using the <em>color</em>
+    URL parameter.</p>
+{% endblock %}
+
 
 {% block exercise %}
 
-<form id="user-input">
-    <input type="text" value="red">
-</form>
-
-<div id="output"></div>
-
-<script src="/static/jquery.min.js"></script>
-<!-- "><script>alert(1)</script><p class=" -->
 <script>
-    
-    function setColor(value) {
-        $('#output').html('<p style="color:' + value + '">Hi!</p>');
-    }
-    
-    $('#user-input input').keyup(function () {
-        var value = $(this).val();
-        setColor(value);
+    $(document).ready(function() {
+        var scriptPresent = $('#output script').length > 0;
+        evaluateSuccess(scriptPresent);
     });
-    
-    $('#user-input').submit(function () {
-        var value = $(this).find('input').val();
-        setColor(value);
-        return false;
-    });
-    
-    $('#user-input').submit();
 </script>
+
+<div id="output" style="color:{{ request.args.color | safe }}">Hello, world!</div>
 
 {% endblock %}
