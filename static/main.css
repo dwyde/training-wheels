@@ -54,9 +54,7 @@ nav a:hover {
 }
 
 #content h1 {
-    margin:0 0 1em;
-    line-height:1;
-    font-size:1.3em;
+    margin:0;
 }
 
 .success {
@@ -65,4 +63,9 @@ nav a:hover {
 
 .failure {
     color: maroon;
+}
+
+.success, .failure {
+    font-weight:bold;
+    font-size:1.2em;
 }
