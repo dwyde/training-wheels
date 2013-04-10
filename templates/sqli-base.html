@@ -1,0 +1,29 @@
+{% extends 'base.html' %}   
+
+{% block exercise %}
+<form id="user">
+    <label for="username">Enter your username: </label>
+    <input type="text" name="username">
+    <input type="submit" value="Go!">
+</form>
+
+<p><pre id="statement"></pre></p>
+
+<script>
+    $('#user').submit(function() {
+        var username = $(this).find('input[type=text]').val();
+        $.ajax({
+            url: '',
+            data: {name: username},
+            dataType: 'json',
+            success: function(data) {
+                $('#statement').text(data.query);
+                evaluateSuccess(data.success);
+            },
+            type: 'POST',
+        });
+        return false;
+    });
+</script>
+
+{% endblock %}

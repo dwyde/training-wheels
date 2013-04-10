@@ -1,30 +1,45 @@
+import json
+
 from flask import Flask, render_template, request
 
-from exercises import EXERCISES
+from exercises import SQLSelectInjection, SQLInsertInjection
 
 
 # Initialize the Flask application.
 app = Flask(__name__)
 
 
-@app.route('/exercise/<int:exercise_num>/')
-def exercise(exercise_num):
-    try:
-        exercise_obj = EXERCISES[exercise_num]
-    except IndexError:
-        return 'Exercise not found.', 404
-    
-    context = exercise_obj.process(request)
-    response_body = render_template(exercise_obj.template,
-                                    title=exercise_obj.name,
-                                    exercises=enumerate(EXERCISES),
-                                    **context)
-    return response_body, 200, {'X-XSS-Protection': '0'}
+@app.route('/password-source')
+def password_source():
+    return render_template('js-password.html')
 
-@app.route('/')
-def index():
-    return render_template('index.html', exercises=enumerate(EXERCISES))
+@app.route('/xss-form')
+def xss_form():
+    return render_template('xss-form.html')
 
+@app.route('/xss-attr')
+def xss_attr():
+    return render_template('xss-attr.html')
+
+@app.route('/xss-query')
+def xss_query():
+    return render_template('xss-query.html'), 200, {'X-XSS-Protection': '0'}
+
+def _sqli_base(request, view_klass, template):
+    if request.method == 'POST':
+        view_obj = view_klass()
+        result = view_obj.process(request)
+        return json.dumps(result), 200, {'Content-Type': 'application/json'}
+    else:
+        return render_template(template)
+
+@app.route('/sqli-select', methods=['GET', 'POST'])
+def sqli_select():
+    return _sqli_base(request, SQLSelectInjection, 'sqli-select.html')
+
+@app.route('/sqli-insert', methods=['GET', 'POST'])
+def sqli_insert():
+    return _sqli_base(request, SQLInsertInjection, 'sqli-insert.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

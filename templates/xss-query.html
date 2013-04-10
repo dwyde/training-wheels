@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% set title = 'XSS in a query parameter' %}
+
 {% block exercise %}
 
 <form>
@@ -6,6 +8,6 @@
 <input type="submit" value="Go!">
 </form>
 
-Your name is: {{ name | safe }}.
+Your name is: {{ request.args.name | safe }}.
 
 {% endblock %}

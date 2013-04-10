@@ -10,9 +10,12 @@
     </header>
     <nav>
         <ul>
-        {% for i, exercise in exercises %}
-            <li><a href="/exercise/{{ i }}/">{{ exercise.name }}</a></li>
-        {% endfor %}
+            <li><a href="/password-source">Password in page source</a></li>
+            <li><a href="/xss-form">Script injection in a form</a></li>
+            <li><a href="/xss-attr">Script injection in an attribute</a></li>
+            <li><a href="/xss-query">XSS in a query parameter</a></li>
+            <li><a href="/sqli-select">SQL SELECT injection</a></li>
+            <li><a href="/sqli-insert">SQL INSERT injection</a></li>
         </ul>
     </nav>
     
@@ -22,6 +25,9 @@
         <div id="instructions">
             {% block instructions %}{% endblock %}
         </div>
+        
+        <script src="/static/jquery.min.js"></script>
+        <script src="/static/exercise-util.js"></script>
         
         <div id="exercise">
             <h2>Your Turn</h2>

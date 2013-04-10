@@ -1,47 +1,7 @@
 import sqlite3
 
 
-class BaseExercise(object):
-    
-    name = ''
-    
-    template = ''
-    
-    def process(self, request):
-        return {}
-    
-
-class PasswordInSource(BaseExercise):
-    
-    name = 'Password in page source'
-    
-    template = 'js-password.html'
-
-class ReflectedXSSForm(BaseExercise):
-    
-    name = 'Script injection in a form'
-    
-    template = 'xss.html'
-
-
-class ReflectedXSSAttr(BaseExercise):
-    
-    name = 'Script injection in an attribute'
-    
-    template = 'xss-attr.html'
-
-
-class ReflectedXSSQueryParam(BaseExercise):
-    
-    name = 'XSS in a query parameter'
-    
-    template = 'xss-query.html'
-    
-    def process(self, request):
-        return {'name': request.args.get('name', '')}
-
-
-class BaseSQLInjection(BaseExercise):
+class BaseSQLInjection(object):
     
     # Users to initially load into the database.
     users = ('david', 'foo')
@@ -57,7 +17,7 @@ class BaseSQLInjection(BaseExercise):
 
     def process(self, request):
         """ Base method, shared between SQLi exercises. """
-        name = request.args.get('name', '')
+        name = request.form.get('name', '')
         query = "SELECT * FROM users WHERE name='{0}'".format(name)
         
         conn = self._init_database()
@@ -116,14 +76,3 @@ class SQLInsertInjection(BaseSQLInjection):
     
     def _check_success(self, results):
         return len(results) > len(self.users)
-
-
-# An index of available levels.
-EXERCISES = [
-    PasswordInSource(),
-    ReflectedXSSForm(),
-    ReflectedXSSAttr(),
-    ReflectedXSSQueryParam(),
-    SQLSelectInjection(),
-    SQLInsertInjection(),
-]

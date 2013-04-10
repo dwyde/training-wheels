@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% set title = 'Script injection in a form' %}
+
 {% block exercise %}
 
 <form id="user-input">
@@ -12,8 +14,6 @@
 <button id="next-hint">Next hint</button>
 <div id="hint-display"></div>
 
-<script src="/static/jquery.min.js"></script>
-<script src="/static/exercise-util.js"></script>
 <script>
     $('#user-input').submit(function () {
         var value = $(this).find('input[type=text]').val();
