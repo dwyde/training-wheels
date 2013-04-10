@@ -11,6 +11,12 @@ class BaseExercise(object):
         return {}
     
 
+class PasswordInSource(BaseExercise):
+    
+    name = 'Password in page source'
+    
+    template = 'js-password.html'
+
 class ReflectedXSSForm(BaseExercise):
     
     name = 'Script injection in a form'
@@ -114,6 +120,7 @@ class SQLInsertInjection(BaseSQLInjection):
 
 # An index of available levels.
 EXERCISES = [
+    PasswordInSource(),
     ReflectedXSSForm(),
     ReflectedXSSAttr(),
     ReflectedXSSQueryParam(),

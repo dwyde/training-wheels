@@ -58,3 +58,11 @@ nav a:hover {
     line-height:1;
     font-size:1.3em;
 }
+
+.success {
+    color: green;
+}
+
+.failure {
+    color: maroon;
+}
