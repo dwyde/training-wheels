@@ -12,7 +12,6 @@ casper.then(function() {
     var result = this.evaluate(function() {
         return $('#result').html();
     });
-    casper.echo(result);
     this.assertSuccess(result, 'Valid SQL INSERT injection.');
 });
 
