@@ -49,41 +49,6 @@ class BaseSQLInjection(BaseLevel):
                 conn.execute('''INSERT INTO users VALUES (?)''', (user,))
         return conn
 
-
-class SQLSelectInjection(BaseSQLInjection):
-    """ Perform an SQL SELECT query that's vulnerable to injection. """
-    
-    name = 'SQL SELECT injection'
-    
-    template = 'sqli.html'
-    
-    def process(self, request):
-        # name = "' OR '1'='1"
-        #' OR 1=1--
-        name = request.args.get('name', '')
-        query = "SELECT * FROM users WHERE name='{0}'".format(name)
-        
-        conn = self._init_database()
-        with conn:
-            cur = conn.cursor()
-            try:
-                cur.execute(query)
-            except sqlite3.OperationalError:
-                pass
-            results = cur.fetchall()
-            cur.close()
-        
-        success = len(results) == len(self.users)
-        return {'query': query, 'success': success}
-
-
-class SQLInsertInjection(BaseSQLInjection):
-    """ Allow multiple statements to be executed via SQL injection. """
-    
-    name = 'SQL INSERT injection'
-    
-    template = 'sqli.html'
-    
     def process(self, request):
         # name = "'; INSERT INTO users VALUES ('zz')--"
         name = request.args.get('name', '')
@@ -93,15 +58,57 @@ class SQLInsertInjection(BaseSQLInjection):
         with conn:
             cursor = conn.cursor()
             try:
-                cursor.executescript(query)
+                self._run_query(cursor, query)
             except sqlite3.OperationalError:
                 pass
-            cursor.execute('SELECT * FROM users')
+            self._extra_statements(cursor)
             results = cursor.fetchall()
             cursor.close()
     
-        success = len(results) > len(self.users)
+        success = self._check_success(results)
         return {'query': query, 'success': success}
+
+    def _run_query(self, cursor, query):
+        raise NotImplementedError
+    
+    def _extra_statements(self, cursor):
+        raise NotImplementedError
+    
+    def _check_success(self, results):
+        raise NotImplementedError
+
+class SQLSelectInjection(BaseSQLInjection):
+    """ Perform an SQL SELECT query that's vulnerable to injection. """
+    
+    name = 'SQL SELECT injection'
+    
+    template = 'sqli.html'
+    
+    def _run_query(self, cursor, query):
+        cursor.execute(query)
+    
+    def _extra_statements(self, cursor):
+        pass
+    
+    def _check_success(self, results):
+        return len(results) == len(self.users)
+    
+
+class SQLInsertInjection(BaseSQLInjection):
+    """ Allow multiple statements to be executed via SQL injection. """
+    
+    name = 'SQL INSERT injection'
+    
+    template = 'sqli.html'
+    
+    def _run_query(self, cursor, query):
+        cursor.executescript(query)
+    
+    def _extra_statements(self, cursor):
+        cursor.execute('SELECT * FROM users')
+    
+    def _check_success(self, results):
+        return len(results) > len(self.users)
 
 
 # An index of available levels.
