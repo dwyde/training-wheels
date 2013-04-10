@@ -50,7 +50,7 @@ class BaseSQLInjection(BaseLevel):
         return conn
 
     def process(self, request):
-        # name = "'; INSERT INTO users VALUES ('zz')--"
+        """ Base method, shared between SQLi exercises. """
         name = request.args.get('name', '')
         query = "SELECT * FROM users WHERE name='{0}'".format(name)
         
