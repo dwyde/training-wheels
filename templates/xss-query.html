@@ -1,13 +1,23 @@
 {% extends 'base.html' %}
 {% set title = 'XSS in a query parameter' %}
 
+{% block instructions %}
+<p>This is a basic cross-site scripting (XSS) attack.</p>
+<p>Inject a &lt;script&gt; tag into the page using the <em>name</em>
+parameter in the URL.</p>
+
+{% endblock %}
+
 {% block exercise %}
 
-<form>
-<label for="name">Enter your name: </label><input name="name">
-<input type="submit" value="Go!">
-</form>
+<div id="output">Your name is: {{ request.args.name | safe }}.</div>
 
-Your name is: {{ request.args.name | safe }}.
+<script>
+    $(document).ready(function() {
+        var scriptPresent = $('#output script').length > 0;
+        evaluateSuccess(scriptPresent);
+    });
+    
+</script>
 
 {% endblock %}
