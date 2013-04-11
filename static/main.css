@@ -54,6 +54,10 @@ nav a:hover {
     font-size:1.4em;
 }
 
+#exercise {
+    margin-top:2em;
+}
+
 .success {
     color: green;
 }
