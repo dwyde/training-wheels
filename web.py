@@ -9,6 +9,10 @@ from exercises import SQLSelectInjection, SQLInsertInjection
 app = Flask(__name__)
 
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 @app.route('/password-source')
 def password_source():
     return render_template('js-password.html')

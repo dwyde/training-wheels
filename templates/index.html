@@ -1,1 +1,21 @@
 {% extends 'base.html' %}
+{% set title = 'Introduction' %}
+
+{% block instructions %}
+<p>This is a collection of simple web security exercises.</p>
+
+{% endblock %}
+
+
+{% block exercise %}
+<p>Test out your skills! You'll need basic knowledge of HTML and SQL.</p>
+
+<p>Once you're done, try more advanced code labs:</p>
+<ul>
+    <li><a href="http://google-gruyere.appspot.com/">Google Gruyere</a></li>
+    <li><a href="https://www.owasp.org/index.php/Category:OWASP_WebGoat_Project">OWASP WebGoat</a></li>
+    <li><a href="http://exploit-exercises.com/nebula">Nebula</a></li>
+    <li><a href="http://www.overthewire.org/wargames/natas/">Natas</a></li>
+    <li><a href="https://github.com/stripe-ctf/stripe-ctf-2.0">Stripe Capture the Flag</a></li>
+</ul>
+{% endblock %}
