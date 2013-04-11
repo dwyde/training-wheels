@@ -15,32 +15,27 @@ header h1 {
     padding: .5em;
 }
 
-nav ul {
-    float: left;
-    list-style-type: none;
-    padding: 0;
-    margin: 0 0 0 1em;
+nav {
     background:#eee;
     border: 1px solid #000;
-}
-
-nav ul li {
-    color: #00e;
-	text-decoration: none;
-	padding: 5px;
-	border-bottom: 1px dotted #000;
-	font-weight: bold;
-    font-size: .9em;
-}
-
-nav ul li:last-child {
-    border-bottom: none;
+    float: left;
+    list-style-type: none;
+    margin: 0 0 0 1em;
+    padding: 0;
 }
 
 nav a {
+    border-bottom: 1px dotted #000;
     color: #000;
+    display:block;
     font-weight:normal;
-    text-decoration: none;
+	font-size: .9em;
+	padding: 5px;
+	text-decoration: none;
+}
+
+nav a:last-child {
+    border-bottom: none;
 }
 
 nav a:hover {
