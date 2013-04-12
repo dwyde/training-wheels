@@ -4,7 +4,7 @@ This is a collection of simple web security exercises.
 
 # Instructions
 
-```python
+```bash
 python web.py
 ```
 
