@@ -1,4 +1,8 @@
 import json
+import os.path
+import sys
+for library in ('Flask-0.9', 'Jinja2-2.6', 'Werkzeug-0.8.3'):
+    sys.path.append(os.path.join('lib', library))
 
 from flask import Flask, render_template, request
 
