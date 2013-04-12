@@ -48,10 +48,6 @@ class BaseSQLInjection(object):
 class SQLSelectInjection(BaseSQLInjection):
     """ Perform an SQL SELECT query that's vulnerable to injection. """
     
-    name = 'SQL SELECT injection'
-    
-    template = 'sqli.html'
-    
     def _run_query(self, cursor, query):
         cursor.execute(query)
     
@@ -64,10 +60,6 @@ class SQLSelectInjection(BaseSQLInjection):
 
 class SQLInsertInjection(BaseSQLInjection):
     """ Allow multiple statements to be executed via SQL injection. """
-    
-    name = 'SQL INSERT injection'
-    
-    template = 'sqli.html'
     
     def _run_query(self, cursor, query):
         cursor.executescript(query)
